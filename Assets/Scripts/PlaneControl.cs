@@ -42,7 +42,7 @@ public class PlaneControl : MonoBehaviour
 
             // turn plane visible for 100ms
             GetComponent<Renderer>().enabled = true;
-            StartCoroutine(DisablePlane(100));
+            StartCoroutine(DisablePlane(500));
             PlayAudio();
         }
     }
