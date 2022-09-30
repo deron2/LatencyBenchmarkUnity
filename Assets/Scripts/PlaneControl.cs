@@ -5,15 +5,15 @@ using UnityEngine;
 public class PlaneControl : MonoBehaviour
 {
 
-    // Delay between audio and video
     public int delayInMs = 0;
-
     public float isi = 1f;
+    public bool isPlaying = false;
     
-    // audioSource
-    private AudioSource audioSource;
+    public UnityEngine.EventSystems.OVRInputModule InputModule;
 
+    private AudioSource audioSource;
     private float timer = 0.0f;
+
     
     // Start is called before the first frame update
     void Start()
@@ -29,28 +29,59 @@ public class PlaneControl : MonoBehaviour
     void Update()
     {
         // increase mscount by delta time
-        timer += Time.deltaTime;
         
-
-
-        if (timer >= isi)
+        if (OVRInput.GetDown(OVRInput.Button.One))
         {
-            // print timer
-            Debug.Log((timer - isi)*1000);
-            // reset mscount
-            timer = 0;
-
-            // turn plane visible for 100ms
-            GetComponent<Renderer>().enabled = true;
-            StartCoroutine(DisablePlane(500));
-            PlayAudio();
+            isPlaying = !isPlaying;
         }
+
+        // if thumbthis is left, decrease isi
+        if (OVRInput.GetDown(OVRInput.Button.Three))
+        {
+            this.isi -= 0.01f;
+        }
+        if (OVRInput.GetDown(OVRInput.Button.Four))
+        {
+            this.isi += 0.01f;
+        }
+
+        if(isPlaying)
+        {
+            timer += Time.deltaTime;
+            if (timer >= isi)
+                {
+                    timer = 0;
+
+                    // turn plane visible for 500ms
+
+                    PlayAudio();
+                    EnablePlane();
+                    StartCoroutine(DisablePlaneWithDelay(100));
+                }
+        }
+        else
+        {
+            // turn plane invisible
+            GetComponent<Renderer>().enabled = false;
+        }
+
     }
 
-    IEnumerator DisablePlane(int ms)
+    void OnDisable()
     {
-        yield return new WaitForSeconds(ms / 1000f);
         GetComponent<Renderer>().enabled = false;
+        StopAllCoroutines();
+        isPlaying = false;
+    }
+
+    void DisablePlane()
+    {
+        GetComponent<Renderer>().enabled = false;
+    }
+
+    void EnablePlane()
+    {
+        GetComponent<Renderer>().enabled = true;
     }
 
     void PlayAudio()
@@ -58,6 +89,11 @@ public class PlaneControl : MonoBehaviour
         // wait ms
         audioSource.PlayOneShot(audioSource.clip);
         return;
-    }
+    } 
 
+    IEnumerator DisablePlaneWithDelay(int ms)
+    {
+        yield return new WaitForSeconds(ms / 1000f);
+        GetComponent<Renderer>().enabled = false;
+    }
 }
