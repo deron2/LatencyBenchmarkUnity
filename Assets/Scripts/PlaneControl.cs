@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlaneControl : MonoBehaviour
 {
-
     public int delayInMs = 0;
     public float isi = 1f;
     public bool isPlaying = false;

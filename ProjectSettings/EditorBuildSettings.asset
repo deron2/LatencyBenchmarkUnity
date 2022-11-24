@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: 8a81e1b4c7e18be4c813864ca6684a91
+    path: Assets/Scenes/OVRAudio.unity
+    guid: 921ff027825a345418c652349e76ab7e
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 90d4e0cfef924e64d8b5c760b21ce3e3, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c98ae29e9b48c6145b6a8d8786753ec5, type: 2}
